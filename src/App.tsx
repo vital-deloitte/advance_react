@@ -1,11 +1,14 @@
-import React from 'react';
-import './App.scss';
-import Dashboard from './components/Dashboard/Dashboard';
+import React from "react";
+import "./App.scss";
+import Dashboard from "./components/Dashboard/Dashboard";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <Dashboard />
+      <Router>
+        <Dashboard />
+      </Router>
     </div>
   );
 }

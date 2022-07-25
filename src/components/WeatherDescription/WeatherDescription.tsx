@@ -1,24 +1,74 @@
 import React from "react";
 import "./WeatherDescription.scss";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import { Link } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import { Link, useLocation } from "react-router-dom";
+import weatherpic from "./assets/sunny.png";
+import arrow from "./assets/arrow.png";
+import degree from "./assets/degree.png";
+import WeatherChart from "./WeatherChart/WeatherChart";
+import WeatherDetails from "./WeatherDetails/WeatherDetails";
+// import weatherDescAction from "../../store/store";
+import { useSelector } from "react-redux";
+import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
 
 function WeatherDescription() {
+  const descriptions = useSelector(
+    (state: WeatherStateType) => state.weatherDesc
+  );
+  const location = useLocation();
+  console.log(location);
+
+  
   return (
     <div>
       <div className="top-container">
         <div className="left-top">
-          <Link to={"/"} style={{textDecoration: "none"}}>
-            <p>&lt; Back</p>
+          <Link style={{ textDecoration: "none", color: "black" }} to="/">
+            <span>&lt; &nbsp;&nbsp;</span>
+            <span style={{ color: "#0170FE" }}>Back</span>
           </Link>
         </div>
         <div className="right-top">
           <p>
             Add to List &nbsp;&nbsp;
-            <AddCircleOutlineRoundedIcon />
+            <AddIcon
+              style={{
+                backgroundColor: "#DADADA",
+                borderRadius: "50%",
+                color: "black",
+              }}
+            />
           </p>
         </div>
       </div>
+      <div className="middle-container container">
+        <div className="row justify-content-center no-style">
+          <div className="col-sm-2">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <img className="weather-img" src={weatherpic} alt="Weather Icon" />
+          </div>
+        </div>
+        <div className="row justify-content-center pt-4">
+          <div className="col-sm-3">
+            <p className="title-city">
+              {descriptions[0].name} &nbsp;&nbsp;{" "}
+              <img id="arrow" src={arrow} alt="weather-arrow" />
+            </p>
+          </div>
+        </div>
+        <div className="row justify-content-center pt-1">
+          <div className="col-sm-1">
+            <p className="degree-number">
+              {(descriptions[0].main.temp.valueOf() / 10)
+                .toPrecision(2)
+                .toString()}
+              <img id="degree-picture" src={degree} alt="degree" />
+            </p>
+          </div>
+        </div>
+      </div>
+      <WeatherDetails />
+      <WeatherChart />
     </div>
   );
 }
