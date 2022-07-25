@@ -19,7 +19,7 @@ function Dashboard() {
         <Route path="/:cityName" element={<WeatherDescription />} />
         <Route path="/" element={<Search />} />
       </Routes>
-      {bookMarks.length === 0 ? (
+      {bookMarks.weatherArray.length === 0 ? (
         <NoLocation />
       ) : (
         location.pathname === "/" && <WeatherCardSummary />

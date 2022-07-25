@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./WeatherDescription.scss";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useLocation } from "react-router-dom";
@@ -17,8 +17,12 @@ function WeatherDescription() {
   );
   const location = useLocation();
   console.log(location);
+  const city = location.pathname.slice(1);
+  const cityDetails = descriptions.findCityAndDetails[city];
+  console.log(cityDetails);
 
-  
+  const [cityWeatherDescription] = useState(cityDetails);
+
   return (
     <div>
       <div className="top-container">
@@ -51,7 +55,7 @@ function WeatherDescription() {
         <div className="row justify-content-center pt-4">
           <div className="col-sm-3">
             <p className="title-city">
-              {descriptions[0].name} &nbsp;&nbsp;{" "}
+              {cityWeatherDescription.name} &nbsp;&nbsp;{" "}
               <img id="arrow" src={arrow} alt="weather-arrow" />
             </p>
           </div>
@@ -59,16 +63,16 @@ function WeatherDescription() {
         <div className="row justify-content-center pt-1">
           <div className="col-sm-1">
             <p className="degree-number">
-              {(descriptions[0].main.temp.valueOf() / 10)
-                .toPrecision(2)
+              {(cityWeatherDescription.main.temp.valueOf() / 10)
+                .toFixed(0)
                 .toString()}
               <img id="degree-picture" src={degree} alt="degree" />
             </p>
           </div>
         </div>
       </div>
-      <WeatherDetails />
-      <WeatherChart />
+      <WeatherDetails cityDetails={cityWeatherDescription} />
+      <WeatherChart cityName={cityWeatherDescription.name} />
     </div>
   );
 }

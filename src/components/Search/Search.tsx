@@ -4,8 +4,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import "./Search.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchType } from "../assets/Search/SearchType";
-import { typingActions } from "../../store/store";
+import { typingActions, weatherDescAction } from "../../store/store";
 import Suggestion from "../Suggestion/Suggestion";
+import { WeatherType } from "../assets/WeatherInterfaces/AllTypes";
+import axios, { AxiosResponse } from "axios";
+import { APP_KEY } from "../assets/Constants";
 
 function Search() {
   const searchText = useSelector((state: SearchType) => state.search);
@@ -30,8 +33,24 @@ function Search() {
   };
 
   const handleSearchClick = () => {
+    const getWeatherDetails = `https://api.openweathermap.org/data/2.5/weather?q=${searchText.searchContent}&appid=${APP_KEY}`;
     if (searchText.searchContent.length > 0)
       dispatch(typingActions.populateHistory(searchText.searchContent));
+    axios
+      .get(getWeatherDetails)
+      .then((response: AxiosResponse) => {
+        const result: WeatherType = {
+          weather: response.data.weather,
+          main: response.data.main,
+          dt: response.data.dt,
+          name: response.data.name,
+          sys: response.data.sys,
+        };
+        dispatch(weatherDescAction.appendWeather(result));
+        dispatch(weatherDescAction.appendToRecord(result));
+        return result;
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

@@ -9,7 +9,7 @@ export interface WeatherType {
   ];
   main: Main;
   dt: Number;
-  name: String;
+  name: string;
   sys: Sys;
 }
 
@@ -23,10 +23,13 @@ export interface Main {
 }
 
 export interface Sys {
-  sunrise: 1658709202;
-  sunset: 1658755111;
+  sunrise: number;
+  sunset: number;
 }
 
 export interface WeatherStateType {
-  weatherDesc: WeatherType[];
+  weatherDesc: {
+    weatherArray: WeatherType[];
+    findCityAndDetails: Record<string, WeatherType>;
+  };
 }

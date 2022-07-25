@@ -11,12 +11,12 @@ function WeatherCardSummary() {
   const weatherCards = useSelector(
     (state: WeatherStateType) => state.weatherDesc
   );
-
+  console.log(weatherCards);
   return (
     <div className="container mt-5">
       <div className="row remove-style">
-        <div className="col-sm-1 offset-1"></div>
-        {weatherCards.map((card) => {
+        {/* <div className="col-sm-1 offset-1"></div> */}
+        {weatherCards.weatherArray.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
           const rainAlert = card.weather[0].description === "Rain";
 
