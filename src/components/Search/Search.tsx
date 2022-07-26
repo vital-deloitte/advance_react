@@ -41,7 +41,7 @@ function Search() {
   const handleBlur = () => {
     setTimeout(() => {
       dispatch(typingActions.typingEnd());
-    }, 500);
+    }, 300);
   };
 
   const handleSearchClick = () => {
@@ -82,12 +82,6 @@ function Search() {
                   <InputAdornment position="end">
                     {
                       <SearchIcon
-                        // sx={{
-                        //   borderLeft: "1px solid #DADADA",
-                        //   paddingLeft: "0.2em",
-                        //   height: "50px",
-                        //   cursor: "pointer",
-                        // }}
                         className="search-icon"
                         onClick={handleSearchClick}
                       />

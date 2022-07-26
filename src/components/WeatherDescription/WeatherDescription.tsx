@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./WeatherDescription.scss";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useLocation } from "react-router-dom";
-import weatherpic from "./assets/sunny.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import arrow from "./assets/arrow.png";
 import degree from "./assets/degree.png";
 import WeatherChart from "./WeatherChart/WeatherChart";
 import WeatherDetails from "./WeatherDetails/WeatherDetails";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
+import { weatherDescAction } from "../../store/store";
+import Notify from "../Notify/Notify";
 
 function WeatherDescription() {
   const descriptions = useSelector(
@@ -17,33 +18,60 @@ function WeatherDescription() {
   const location = useLocation();
   const city = decodeURIComponent(location.pathname.slice(1));
   const cityDetails = descriptions.findCityAndDetails[city];
-
   const [cityWeatherDescription] = useState(cityDetails);
+  const [isClicked, setIsClicked] = useState(false);
+  const navigate = useNavigate();
 
-  console.log(descriptions);
+  const dispatch = useDispatch();
+  const handleBtnClick = () => {
+    let added = document.getElementById("addedtolist");
+    let add = document.getElementById("addtolist");
+    if (added) {
+      added.style.display = "block";
+      if (add && added.style.display === "block") {
+        add.style.display = "none";
+      }
+    }
+    dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
+    setIsClicked(true);
+  };
+
+  const handleRedirect = () => {
+    if (isClicked === true) {
+      navigate("/bookmark");
+    }
+  };
+  const weatherPic =
+    "https://openweathermap.org/img/wn/" +
+    cityDetails.weather[0].icon +
+    "@2x.png";
+
   return (
     <div>
       <div className="top-container">
-        <div className="left-top">
-          <Link style={{ textDecoration: "none", color: "black" }} to="/">
+        <div className="left-top" onClick={() => handleRedirect()}>
+          <Link style={{ textDecoration: "none", color: "black" }} to={"/"}>
             <span>&lt; &nbsp;&nbsp;</span>
             <span className="backbtn" style={{ color: "#0170FE" }}>
               Back
             </span>
           </Link>
         </div>
-        <div className="right-top">
-          <p>
+        <div id="addtolist" className="right-top">
+          <p onClick={handleBtnClick}>
             Add to List &nbsp;&nbsp;
             <AddIcon className="addicon" />
           </p>
+        </div>
+        <div id="addedtolist" className="button-change">
+          <Notify />
         </div>
       </div>
       <div className="middle-container container">
         <div className="row justify-content-center no-style">
           <div className="col-sm-2 col-6 mt-5">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <img className="weather-img" src={weatherpic} alt="Weather Icon" />
+            <img className="weather-img" src={weatherPic} alt="Weather Icon" />
           </div>
         </div>
         <div className="row justify-content-center pt-4">
@@ -66,7 +94,10 @@ function WeatherDescription() {
         </div>
       </div>
       <WeatherDetails cityDetails={cityWeatherDescription} />
-      <WeatherChart cityName={cityWeatherDescription.name} />
+      <WeatherChart
+        cityName={cityWeatherDescription.name}
+        cityDetails={cityWeatherDescription}
+      />
     </div>
   );
 }
