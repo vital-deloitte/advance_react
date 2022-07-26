@@ -4,6 +4,7 @@ import { WeatherType } from "../../components/assets/WeatherInterfaces/AllTypes"
 interface WeatherDescStateType {
   weatherArray: Array<WeatherType>;
   findCityAndDetails: Record<string, WeatherType>;
+  bookMarks: Array<string>;
 }
 
 // const weatherArray: Array<WeatherType> = [];
@@ -11,7 +12,11 @@ interface WeatherDescStateType {
 
 const weatherDescriptionSlice = createSlice({
   name: "weatherDescription",
-  initialState: { weatherArray: [], findCityAndDetails: {} },
+  initialState: {
+    weatherArray: [],
+    findCityAndDetails: {},
+    bookMarks: ["Bengaluru", "Mangalore"],
+  },
   reducers: {
     appendWeather: (
       state: WeatherDescStateType,
@@ -31,7 +36,14 @@ const weatherDescriptionSlice = createSlice({
       state: WeatherDescStateType,
       action: PayloadAction<WeatherType>
     ) => {
-      state.findCityAndDetails[action.payload.name] = (action.payload);
+      state.findCityAndDetails[action.payload.name] = action.payload;
+    },
+
+    appendToBookMark: (
+      state: WeatherDescStateType,
+      action: PayloadAction<string>
+    ) => {
+      state.bookMarks.push(action.payload);
     },
   },
 });

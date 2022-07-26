@@ -59,7 +59,6 @@ function WeatherChart({ cityName }: { cityName: string }) {
       const result: ChartType = {
         data: response.data.list,
       };
-      console.log(result);
       dispatch(weatherChartAction.populateArray(result.data));
       return result;
     });
@@ -79,39 +78,23 @@ function WeatherChart({ cityName }: { cityName: string }) {
   };
 
   return (
-    <div className="bottom-container container pt-5">
+    <div className="bottom-container container pt-4">
       <div className="row chart-details justify-content-center pt-4">
-        <div className="col-sm-5 pb-3">
-          <p
-            style={{
-              paddingBottom: "4em",
-              color: "#C4C4C4",
-              fontSize: "1.3em",
-              fontFamily: "Poppins",
-            }}
-          >
+        <div className="col-sm-5">
+          <p className="main-title">
             SUNRISE &#38; SUNSET
           </p>
-          <p
-            style={{
-              color: "#9A9A9A",
-              fontFamily: "Roboto",
-              fontWeight: "500",
-            }}
-          >
+          <div className="col-12 d-block d-sm-none pb-2">
+            <Line data={data} options={options} />
+          </div>
+          <p className="day-length ">
             Length of day: <span style={{ color: "#2C2C2C" }}>13H 12M</span>
           </p>
-          <p
-            style={{
-              color: "#9A9A9A",
-              fontFamily: "Roboto",
-              fontWeight: "400",
-            }}
-          >
+          <p className="remaining-length">
             Remaining daylight: <span style={{ color: "#2C2C2C" }}>9H 22M</span>
           </p>
         </div>
-        <div className="col-sm-6">
+        <div className="col-sm-6 d-none d-sm-block">
           <Line data={data} options={options} />
         </div>
       </div>

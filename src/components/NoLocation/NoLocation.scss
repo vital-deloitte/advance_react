@@ -16,4 +16,25 @@
     padding-top: 1.5em;
     padding-left: 0.7em;
 }
+
+.img-container {
+  text-align: center;
+}
+
+@media only screen and (max-width: 700px) {
+  .nolocation-img {
+    width: 55%;
+    padding-left: auto;
+    height: auto;
+    padding-top: 4em;
+  }
+  .nolocation-title {
+    font-family: 'Poppins';
+    text-align: center;
+    font-size: 0.9em;
+   
+    padding-top: 1.5em;
+    padding-left: 0.7em;
+  }
+}
   

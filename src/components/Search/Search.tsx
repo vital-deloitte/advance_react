@@ -6,16 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { SearchType } from "../assets/Search/SearchType";
 import { typingActions, weatherDescAction } from "../../store/store";
 import Suggestion from "../Suggestion/Suggestion";
-import { WeatherType } from "../assets/WeatherInterfaces/AllTypes";
+import {
+  WeatherStateType,
+  WeatherType,
+} from "../assets/WeatherInterfaces/AllTypes";
 import axios, { AxiosResponse } from "axios";
 import { APP_KEY } from "../assets/Constants";
+import WeatherCardSummary from "../WeatherCardSummary/WeatherCardSummary";
 
 function Search() {
   const searchText = useSelector((state: SearchType) => state.search);
+  const isPresentWeather = useSelector(
+    (state: WeatherStateType) => state.weatherDesc.weatherArray
+  );
   const dispatch = useDispatch();
 
   const style = {
-    borderRadius: "100px",
     border: "1px solid #DADADA",
     outline: "none",
     padding: "10px 15px",
@@ -30,6 +36,12 @@ function Search() {
 
   const handleFocus = () => {
     dispatch(typingActions.typingStart());
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      dispatch(typingActions.typingEnd());
+    }, 500);
   };
 
   const handleSearchClick = () => {
@@ -59,7 +71,6 @@ function Search() {
         <div className="row justify-content-center align-items-center remove-style">
           <div className="col-sm-8">
             <TextField
-              id="outlined-basic"
               variant="standard"
               fullWidth
               className="search-bar"
@@ -71,12 +82,13 @@ function Search() {
                   <InputAdornment position="end">
                     {
                       <SearchIcon
-                        sx={{
-                          borderLeft: "1px solid #DADADA",
-                          paddingLeft: "0.2em",
-                          height: "50px",
-                          cursor: "pointer",
-                        }}
+                        // sx={{
+                        //   borderLeft: "1px solid #DADADA",
+                        //   paddingLeft: "0.2em",
+                        //   height: "50px",
+                        //   cursor: "pointer",
+                        // }}
+                        className="search-icon"
                         onClick={handleSearchClick}
                       />
                     }
@@ -87,11 +99,13 @@ function Search() {
                 handleSearch(event)
               }
               onFocus={handleFocus}
+              onBlur={handleBlur}
             />
           </div>
         </div>
-        <Suggestion />
+        {searchText.isTyping === true && <Suggestion />}
       </div>
+      {isPresentWeather.length > 0 && <WeatherCardSummary />}
     </>
   );
 }

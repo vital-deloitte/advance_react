@@ -7,7 +7,6 @@ import arrow from "./assets/arrow.png";
 import degree from "./assets/degree.png";
 import WeatherChart from "./WeatherChart/WeatherChart";
 import WeatherDetails from "./WeatherDetails/WeatherDetails";
-// import weatherDescAction from "../../store/store";
 import { useSelector } from "react-redux";
 import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
 
@@ -16,38 +15,33 @@ function WeatherDescription() {
     (state: WeatherStateType) => state.weatherDesc
   );
   const location = useLocation();
-  console.log(location);
-  const city = location.pathname.slice(1);
+  const city = decodeURIComponent(location.pathname.slice(1));
   const cityDetails = descriptions.findCityAndDetails[city];
-  console.log(cityDetails);
 
   const [cityWeatherDescription] = useState(cityDetails);
 
+  console.log(descriptions);
   return (
     <div>
       <div className="top-container">
         <div className="left-top">
           <Link style={{ textDecoration: "none", color: "black" }} to="/">
             <span>&lt; &nbsp;&nbsp;</span>
-            <span style={{ color: "#0170FE" }}>Back</span>
+            <span className="backbtn" style={{ color: "#0170FE" }}>
+              Back
+            </span>
           </Link>
         </div>
         <div className="right-top">
           <p>
             Add to List &nbsp;&nbsp;
-            <AddIcon
-              style={{
-                backgroundColor: "#DADADA",
-                borderRadius: "50%",
-                color: "black",
-              }}
-            />
+            <AddIcon className="addicon" />
           </p>
         </div>
       </div>
       <div className="middle-container container">
         <div className="row justify-content-center no-style">
-          <div className="col-sm-2">
+          <div className="col-sm-2 col-6 mt-5">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <img className="weather-img" src={weatherpic} alt="Weather Icon" />
           </div>
@@ -55,12 +49,12 @@ function WeatherDescription() {
         <div className="row justify-content-center pt-4">
           <div className="col-sm-3">
             <p className="title-city">
-              {cityWeatherDescription.name} &nbsp;&nbsp;{" "}
+              {cityWeatherDescription.name} &nbsp;
               <img id="arrow" src={arrow} alt="weather-arrow" />
             </p>
           </div>
         </div>
-        <div className="row justify-content-center pt-1">
+        <div className="row justify-content-center">
           <div className="col-sm-1">
             <p className="degree-number">
               {(cityWeatherDescription.main.temp.valueOf() / 10)
