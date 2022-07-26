@@ -1,5 +1,3 @@
-import { Main } from "./AllTypes";
-
 export interface CloudType {
   dt: number;
   clouds: {
@@ -27,11 +25,13 @@ export interface ChartDataType {
 }
 
 export interface ChartType {
-  data: Array<{
-    dt: number;
-    main: MainType;
-    clouds: {
-      all: number;
-    };
-  }>;
+  data: Array<CloudType>;
 }
+
+// export interface SubChartType {
+//   dt: number;
+//   main: MainType;
+//   clouds: {
+//     all: number;
+//   };
+// }

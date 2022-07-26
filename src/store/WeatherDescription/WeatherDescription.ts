@@ -1,47 +1,49 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { WeatherType } from "../../components/assets/WeatherInterfaces/AllTypes";
 
-const initialState: Array<WeatherType> = [
-  {
-    weather: [
-      {
-        id: 802,
-        main: "Clouds",
-        description: "scattered clouds",
-        icon: "03d",
-      },
-    ],
-    dt: 1658723296,
-    main: {
-      temp: 296.95,
-      feels_like: 297.42,
-      temp_min: 296.95,
-      temp_max: 297.05,
-      pressure: 1015,
-      humidity: 78,
-    },
-    name: "Bangalore",
+interface WeatherDescStateType {
+  weatherArray: Array<WeatherType>;
+  findCityAndDetails: Record<string, WeatherType>;
+  bookMarks: Array<string>;
+}
 
-    sys: {
-      sunrise: 1658709202,
-      sunset: 1658755111,
-    },
-  },
-];
+// const weatherArray: Array<WeatherType> = [];
+// const findCityAndDetails: Record<string, WeatherType> = {}
 
 const weatherDescriptionSlice = createSlice({
   name: "weatherDescription",
-  initialState,
+  initialState: {
+    weatherArray: [],
+    findCityAndDetails: {},
+    bookMarks: ["Bengaluru", "Mangalore"],
+  },
   reducers: {
     appendWeather: (
-      state: WeatherType[],
+      state: WeatherDescStateType,
       action: PayloadAction<WeatherType>
     ) => {
-      state.push(action.payload);
+      state.weatherArray.push(action.payload);
     },
 
-    popWeather: (state: WeatherType[], action: PayloadAction<WeatherType>) => {
-      state.filter((weather) => weather !== action.payload);
+    popWeather: (
+      state: WeatherDescStateType,
+      action: PayloadAction<WeatherType>
+    ) => {
+      state.weatherArray.filter((weather) => weather !== action.payload);
+    },
+
+    appendToRecord: (
+      state: WeatherDescStateType,
+      action: PayloadAction<WeatherType>
+    ) => {
+      state.findCityAndDetails[action.payload.name] = action.payload;
+    },
+
+    appendToBookMark: (
+      state: WeatherDescStateType,
+      action: PayloadAction<string>
+    ) => {
+      state.bookMarks.push(action.payload);
     },
   },
 });

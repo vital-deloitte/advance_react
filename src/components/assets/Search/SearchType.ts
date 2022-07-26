@@ -6,4 +6,5 @@ export interface SearchContentType {
   searchContent: String;
   prevHistory?: Array<[number, String]>;
   id: number;
+  isTyping?: boolean;
 }
