@@ -49,7 +49,7 @@
 }
 
 .addicon {
-  background-color: #DADADA;
+  background-color: #dadada;
   border-radius: 50%;
   color: black;
 }
@@ -73,5 +73,8 @@
     border: 1px solid #000;
     color: black;
   }
-  
+}
+
+.button-change {
+  display: none;
 }

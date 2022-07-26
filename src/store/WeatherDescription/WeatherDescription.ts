@@ -15,7 +15,7 @@ const weatherDescriptionSlice = createSlice({
   initialState: {
     weatherArray: [],
     findCityAndDetails: {},
-    bookMarks: ["Bengaluru", "Mangalore"],
+    bookMarks: [],
   },
   reducers: {
     appendWeather: (

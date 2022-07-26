@@ -21,6 +21,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { APP_KEY } from "../../assets/Constants";
 import { weatherChartAction } from "../../../store/store";
+import { WeatherType } from "../../assets/WeatherInterfaces/AllTypes";
 
 ChartJS.register(
   CategoryScale,
@@ -37,7 +38,13 @@ export const options = {
   responsive: true,
 };
 
-function WeatherChart({ cityName }: { cityName: string }) {
+function WeatherChart({
+  cityName,
+  cityDetails,
+}: {
+  cityName: string;
+  cityDetails?: WeatherType;
+}) {
   const chartData = useSelector((state: ChartDataType) => state.chartData);
   const dispatch = useDispatch();
   const dataDisplay = chartData.data;
@@ -81,17 +88,41 @@ function WeatherChart({ cityName }: { cityName: string }) {
     <div className="bottom-container container pt-4">
       <div className="row chart-details justify-content-center pt-4">
         <div className="col-sm-5">
-          <p className="main-title">
-            SUNRISE &#38; SUNSET
-          </p>
+          <p className="main-title">SUNRISE &#38; SUNSET</p>
           <div className="col-12 d-block d-sm-none pb-2">
             <Line data={data} options={options} />
           </div>
           <p className="day-length ">
-            Length of day: <span style={{ color: "#2C2C2C" }}>13H 12M</span>
+            Length of day:{" "}
+            <span style={{ color: "#2C2C2C" }}>
+              {cityDetails &&
+                new Date(cityDetails.sys.sunrise * 1000)
+                  .toLocaleTimeString()
+                  .split(":")[0]}
+              {"H "}
+              {cityDetails &&
+                new Date(cityDetails.sys.sunrise * 1000)
+                  .toLocaleTimeString()
+                  .split(":")[1]}
+              {"M"}
+            </span>
           </p>
           <p className="remaining-length">
-            Remaining daylight: <span style={{ color: "#2C2C2C" }}>9H 22M</span>
+            Remaining daylight:{" "}
+            <span style={{ color: "#2C2C2C" }}>
+              {cityDetails &&
+                Math.abs(
+                  new Date(cityDetails.sys.sunset).getHours() -
+                    new Date().getHours()
+                )}
+              {"H"}{" "}
+              {cityDetails &&
+                Math.abs(
+                  new Date(cityDetails.sys.sunset).getMinutes() -
+                    new Date().getMinutes()
+                )}
+              {"M"}
+            </span>
           </p>
         </div>
         <div className="col-sm-6 d-none d-sm-block">
