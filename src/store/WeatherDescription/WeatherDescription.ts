@@ -25,11 +25,13 @@ const weatherDescriptionSlice = createSlice({
       state.weatherArray.push(action.payload);
     },
 
-    popWeather: (
+    popBookMark: (
       state: WeatherDescStateType,
-      action: PayloadAction<WeatherType>
+      action: PayloadAction<string>
     ) => {
-      state.weatherArray.filter((weather) => weather !== action.payload);
+      state.bookMarks = state.bookMarks.filter(
+        (weather) => weather !== action.payload
+      );
     },
 
     appendToRecord: (
