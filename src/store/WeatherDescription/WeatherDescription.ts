@@ -7,9 +7,6 @@ interface WeatherDescStateType {
   bookMarks: Array<string>;
 }
 
-// const weatherArray: Array<WeatherType> = [];
-// const findCityAndDetails: Record<string, WeatherType> = {}
-
 const weatherDescriptionSlice = createSlice({
   name: "weatherDescription",
   initialState: {

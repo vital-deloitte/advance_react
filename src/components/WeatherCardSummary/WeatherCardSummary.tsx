@@ -15,20 +15,19 @@ function WeatherCardSummary() {
       <div className="row remove-style">
         {weatherCards.weatherArray.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
-          const rainAlert = card.weather[0].description === "Rain";
+          const rainAlert = card.weather[0].main === "Rain";
           return (
-            
             <div
               key={card.dt.valueOf()}
               className="col-sm-3 col-12 card-main"
-              style={{ paddingLeft: "1em",}}
+              style={{ paddingLeft: "1em" }}
             >
               <div className="row justify-content-between">
                 <div className="col-sm-4 col-4 align-self-center">
                   <Link
                     to={`/${card.name}`}
                     style={{ textDecoration: "none", color: "#000" }}
-                  > 
+                  >
                     <p className="rob-500">{card.name.toString()}</p>
                   </Link>
                 </div>

@@ -1,18 +1,24 @@
 import React from "react";
 import "./BookMark.scss";
 import NoLocation from "../NoLocation/NoLocation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
 import WeatherDetails from "../WeatherDescription/WeatherDetails/WeatherDetails";
 import WeatherChart from "../WeatherDescription/WeatherChart/WeatherChart";
 import degree from "./assets/degree.png";
 import arrow from "./assets/arrow.png";
 import Carousel from "react-bootstrap/Carousel";
+import { weatherDescAction } from "../../store/store";
 
 function BookMark() {
   const bookMarkItems = useSelector(
     (state: WeatherStateType) => state.weatherDesc
   );
+  const dispatch = useDispatch();
+
+  const handleRemove = (cityName: string) => {
+    dispatch(weatherDescAction.popBookMark(cityName));
+  };
 
   return (
     <>
@@ -24,7 +30,7 @@ function BookMark() {
             variant="dark"
             controls={bookMarkItems.bookMarks.length > 1}
             indicators={bookMarkItems.bookMarks.length > 1}
-            interval={null}
+            interval={1000}
           >
             {bookMarkItems.bookMarks.map((cityWeatherDescription) => {
               const weatherPic =
@@ -33,19 +39,41 @@ function BookMark() {
                   .weather[0].icon +
                 "@2x.png";
               return (
-                <Carousel.Item>
-                  <div key={cityWeatherDescription}>
+                <Carousel.Item key={cityWeatherDescription}>
+                  <div>
                     <div className="container">
                       <div className="row justify-content-center">
                         <div className="col-sm-7 col-12 ">
                           <div className="middle-container container">
-                            <div className="row justify-content-center no-style">
-                              <div className="col-sm-2 col-4">
+                            <div className="row justify-content-center no-style pt-4">
+                              <div className="col-sm-2 col-2"></div>
+                              <div className="col-sm-2 col-1"></div>
+                              <div className="col-sm-2 col-1"></div>
+                              <div
+                                className="col-sm-4 col-4"
+                                style={{ textAlign: "center" }}
+                              >
                                 <img
                                   className="weather-img"
                                   src={weatherPic}
                                   alt="Weather Icon"
                                 />
+                              </div>
+
+                              <div
+                                className="col-sm-2 col-4 "
+                                style={{ textAlign: "right" }}
+                              >
+                                <button
+                                  type="button"
+                                  id="removal"
+                                  className="btn btn-danger"
+                                  onClick={() =>
+                                    handleRemove(cityWeatherDescription)
+                                  }
+                                >
+                                  Remove
+                                </button>
                               </div>
                             </div>
                             <div className="row justify-content-center pt-1">

@@ -1,11 +1,3 @@
-export interface CloudType {
-  dt: number;
-  clouds: {
-    all: number;
-  };
-  main: MainType;
-}
-
 export interface MainType {
   temp: number;
   feels_like: number;
@@ -18,20 +10,10 @@ export interface MainType {
   temp_kf: number;
 }
 
-export interface ChartDataType {
-  chartData: {
-    data: CloudType[];
+export interface CloudType {
+  dt: number;
+  clouds: {
+    all: number;
   };
+  main: MainType;
 }
-
-export interface ChartType {
-  data: Array<CloudType>;
-}
-
-// export interface SubChartType {
-//   dt: number;
-//   main: MainType;
-//   clouds: {
-//     all: number;
-//   };
-// }
