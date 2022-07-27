@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./WeatherChart.scss";
 import {
   Chart as ChartJS,
@@ -13,15 +13,11 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  ChartDataType,
-  ChartType,
-} from "../../assets/WeatherInterfaces/chartTypes";
-import axios, { AxiosResponse } from "axios";
-import { APP_KEY } from "../../assets/Constants";
-import { weatherChartAction } from "../../../store/store";
-import { WeatherType } from "../../assets/WeatherInterfaces/AllTypes";
+  WeatherStateType,
+  WeatherType,
+} from "../../assets/WeatherInterfaces/AllTypes";
 
 ChartJS.register(
   CategoryScale,
@@ -45,9 +41,8 @@ function WeatherChart({
   cityName: string;
   cityDetails?: WeatherType;
 }) {
-  const chartData = useSelector((state: ChartDataType) => state.chartData);
-  const dispatch = useDispatch();
-  const dataDisplay = chartData.data;
+  const chartData = useSelector((state: WeatherStateType) => state.weatherDesc);
+  const dataDisplay = chartData.findCityAndDetails[cityName].list;
 
   const labels: Array<String> = [];
   const temperatures: Array<number> = [];
@@ -59,17 +54,6 @@ function WeatherChart({
   dataDisplay.forEach((reading) => {
     labels.push(new Date(reading.dt * 1000).toDateString());
   });
-
-  useEffect(() => {
-    const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${APP_KEY}`;
-    axios.get(forecastUrl).then((response: AxiosResponse) => {
-      const result: ChartType = {
-        data: response.data.list,
-      };
-      dispatch(weatherChartAction.populateArray(result.data));
-      return result;
-    });
-  }, [cityName, dispatch]);
 
   const data = {
     labels,

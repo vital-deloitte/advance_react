@@ -1,3 +1,5 @@
+import { CloudType } from "./chartTypes";
+
 export interface WeatherType {
   weather: [
     {
@@ -11,6 +13,7 @@ export interface WeatherType {
   dt: Number;
   name: string;
   sys: Sys;
+  list: Array<CloudType>;
 }
 
 export interface Main {

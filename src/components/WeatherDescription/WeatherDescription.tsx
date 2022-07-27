@@ -19,8 +19,6 @@ function WeatherDescription() {
   const city = decodeURIComponent(location.pathname.slice(1));
   const cityDetails = descriptions.findCityAndDetails[city];
   const [cityWeatherDescription] = useState(cityDetails);
-  // const [isClicked, setIsClicked] = useState(false);
-  // const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const handleBtnClick = () => {
@@ -35,11 +33,6 @@ function WeatherDescription() {
     dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
   };
 
-  // const handleRedirect = () => {
-  //   if (isClicked === true) {
-  //     navigate("/bookmark");
-  //   }
-  // };
   const weatherPic =
     "https://openweathermap.org/img/wn/" +
     cityDetails.weather[0].icon +
@@ -63,7 +56,7 @@ function WeatherDescription() {
           </p>
         </div>
         <div id="addedtolist" className="button-change">
-          <Notify />
+          <Notify cityDetails={cityDetails} />
         </div>
       </div>
       <div className="middle-container container">

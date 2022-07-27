@@ -20,7 +20,6 @@ function Search() {
     (state: WeatherStateType) => state.weatherDesc.weatherArray
   );
   const dispatch = useDispatch();
-
   const style = {
     border: "1px solid #DADADA",
     outline: "none",
@@ -45,24 +44,39 @@ function Search() {
   };
 
   const handleSearchClick = () => {
+    let result: WeatherType;
     const getWeatherDetails = `https://api.openweathermap.org/data/2.5/weather?q=${searchText.searchContent}&appid=${APP_KEY}`;
-    if (searchText.searchContent.length > 0)
+    const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${searchText.searchContent}&appid=${APP_KEY}`;
+    if (searchText.searchContent.length > 0) {
       dispatch(typingActions.populateHistory(searchText.searchContent));
-    axios
-      .get(getWeatherDetails)
-      .then((response: AxiosResponse) => {
-        const result: WeatherType = {
-          weather: response.data.weather,
-          main: response.data.main,
-          dt: response.data.dt,
-          name: response.data.name,
-          sys: response.data.sys,
-        };
-        dispatch(weatherDescAction.appendWeather(result));
-        dispatch(weatherDescAction.appendToRecord(result));
-        return result;
-      })
-      .catch((err) => console.log(err));
+      axios
+        .get(getWeatherDetails)
+        .then((response: AxiosResponse) => {
+          result = {
+            weather: response.data.weather,
+            main: response.data.main,
+            dt: response.data.dt,
+            name: response.data.name,
+            sys: response.data.sys,
+            list: [],
+          };
+          axios
+            .get(forecastUrl)
+            .then((response: AxiosResponse) => {
+              console.log(response.data);
+              result = {
+                ...result,
+                list: response.data.list,
+              };
+              dispatch(weatherDescAction.appendWeather(result));
+              dispatch(weatherDescAction.appendToRecord(result));
+              return result;
+            })
+            .catch((err) => console.log(err));
+          return result;
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
