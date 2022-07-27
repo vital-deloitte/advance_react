@@ -99,7 +99,9 @@ function Search() {
         </div>
         {searchText.isTyping === true && <Suggestion />}
       </div>
-      {isPresentWeather.length > 0 && <WeatherCardSummary />}
+      {isPresentWeather.length > 0 && searchText.isTyping === true && (
+        <WeatherCardSummary />
+      )}
     </>
   );
 }

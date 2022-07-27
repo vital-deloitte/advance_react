@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./WeatherDescription.scss";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import arrow from "./assets/arrow.png";
 import degree from "./assets/degree.png";
 import WeatherChart from "./WeatherChart/WeatherChart";
@@ -19,8 +19,8 @@ function WeatherDescription() {
   const city = decodeURIComponent(location.pathname.slice(1));
   const cityDetails = descriptions.findCityAndDetails[city];
   const [cityWeatherDescription] = useState(cityDetails);
-  const [isClicked, setIsClicked] = useState(false);
-  const navigate = useNavigate();
+  // const [isClicked, setIsClicked] = useState(false);
+  // const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const handleBtnClick = () => {
@@ -33,14 +33,13 @@ function WeatherDescription() {
       }
     }
     dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
-    setIsClicked(true);
   };
 
-  const handleRedirect = () => {
-    if (isClicked === true) {
-      navigate("/bookmark");
-    }
-  };
+  // const handleRedirect = () => {
+  //   if (isClicked === true) {
+  //     navigate("/bookmark");
+  //   }
+  // };
   const weatherPic =
     "https://openweathermap.org/img/wn/" +
     cityDetails.weather[0].icon +
@@ -49,7 +48,7 @@ function WeatherDescription() {
   return (
     <div>
       <div className="top-container">
-        <div className="left-top" onClick={() => handleRedirect()}>
+        <div className="left-top">
           <Link style={{ textDecoration: "none", color: "black" }} to={"/"}>
             <span>&lt; &nbsp;&nbsp;</span>
             <span className="backbtn" style={{ color: "#0170FE" }}>

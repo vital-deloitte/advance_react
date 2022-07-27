@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import weatherpic from "./assets/3clouds.png";
 import "./WeatherCard.scss";
 import image from "./assets/svg1.svg";
 import { useSelector } from "react-redux";
@@ -14,7 +13,6 @@ function WeatherCardSummary() {
   return (
     <div className="container overflow-hidden mt-4">
       <div className="row remove-style">
-        {/* <div className="col-sm-1 offset-1"></div> */}
         {weatherCards.weatherArray.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
           const rainAlert = card.weather[0].description === "Rain";
@@ -28,14 +26,14 @@ function WeatherCardSummary() {
               <div className="row justify-content-between">
                 <div className="col-sm-4 col-4 align-self-center">
                   <Link
-                    to={`${card.name}`}
+                    to={`/${card.name}`}
                     style={{ textDecoration: "none", color: "#000" }}
                   > 
                     <p className="rob-500">{card.name.toString()}</p>
                   </Link>
                 </div>
                 <div className="col-sm-2 col-2">
-                  <Link to={`${card.name}`} style={{ textDecoration: "none" }}>
+                  <Link to={`/${card.name}`} style={{ textDecoration: "none" }}>
                     <p className="arrow" style={{ color: "#000000" }}>
                       {" "}
                       <b>&gt;</b>
