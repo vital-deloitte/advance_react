@@ -30,7 +30,13 @@ function WeatherDescription() {
         add.style.display = "none";
       }
     }
-    dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
+
+    const alreadyadded = new Set<string>();
+    for (let cityName of descriptions.bookMarks) {
+      alreadyadded.add(cityName);
+    }
+    !alreadyadded.has(cityWeatherDescription.name) &&
+      dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
   };
 
   const weatherPic =
@@ -38,35 +44,56 @@ function WeatherDescription() {
     cityDetails.weather[0].icon +
     "@2x.png";
 
+  const bookMarkCity = new Set<string>();
+  descriptions.bookMarks.forEach((city) => {
+    bookMarkCity.add(city);
+  });
+
   return (
     <div>
-      <div className="top-container">
-        <div className="left-top">
-          <Link style={{ textDecoration: "none", color: "black" }} to={"/"}>
-            <span>&lt; &nbsp;&nbsp;</span>
-            <span className="backbtn" style={{ color: "#0170FE" }}>
-              Back
-            </span>
-          </Link>
-        </div>
-        <div id="addtolist" className="right-top">
-          <p onClick={handleBtnClick}>
-            Add to List &nbsp;&nbsp;
-            <AddIcon className="addicon" />
-          </p>
-        </div>
-        <div id="addedtolist" className="button-change">
-          <Notify cityDetails={cityDetails} />
+      <div className="top-container container-fluid">
+        <div className="row justify-content-around ">
+          <div className="col-sm-2 col-1 ml-2">
+            <Link style={{ textDecoration: "none", color: "black" }} to={"/"}>
+              <span>&lt; &nbsp;&nbsp;</span>
+              <span className="backbtn" style={{ color: "#0170FE" }}>
+                Back
+              </span>
+            </Link>
+          </div>
+          <div className="col-sm-2 col-1"></div>
+          <div className="col-sm-1 col-2 d-block d-sm-none"></div>
+
+          {!bookMarkCity.has(cityWeatherDescription.name) ? (
+            <>
+              <div className="col-sm-7 col-8">
+                <div id="addtolist" style={{ textAlign: "right" }}>
+                  <p onClick={handleBtnClick}>
+                    Add to List &nbsp;&nbsp;
+                    <AddIcon className="addicon" />
+                  </p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="col-sm-7 col-8">
+                <div id="addedtolist" className="button-change">
+                  <Notify cityDetails={cityDetails} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="middle-container container">
         <div className="row justify-content-center no-style">
-          <div className="col-sm-2 col-6 mt-5">
+          <div className="col-sm-2 col-6">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <img className="weather-img" src={weatherPic} alt="Weather Icon" />
           </div>
         </div>
-        <div className="row justify-content-center pt-4">
+        <div className="row justify-content-center pt-1">
           <div className="col-sm-3">
             <p className="title-city">
               {cityWeatherDescription.name} &nbsp;

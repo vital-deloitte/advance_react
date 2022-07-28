@@ -3,18 +3,18 @@
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
-  line-height: 28px;
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-top: 2em;
+
+  // padding-right: 2em;
+  padding-top: 1.5em;
+  padding-bottom: 0em;
 }
 
-.left-top {
-  float: left;
-}
-.right-top {
-  float: right;
-}
+// .left-top {
+//   float: left;
+// }
+// .right-top {
+//   float: right;
+// }
 
 .weather-img {
   max-width: 123px;
@@ -33,7 +33,7 @@
 }
 
 .degree-number {
-  font-size: 3.7em;
+  font-size: 3.4em;
   font-weight: 500;
   font-family: Poppins;
 }
@@ -55,6 +55,11 @@
 }
 
 @media only screen and (max-width: 700px) {
+  .top-container {
+    padding-bottom: 0em;
+    font-size: 1em;
+    font-weight: 550;
+  }
   .degree-number {
     text-align: center;
   }
@@ -73,8 +78,4 @@
     border: 1px solid #000;
     color: black;
   }
-}
-
-.button-change {
-  display: none;
 }
