@@ -84,14 +84,13 @@ function Search() {
 
               const seen = new Set<String>();
               let present = true;
-
               for (let city of isPresentWeather) {
                 seen.add(city.name);
               }
-
               if (seen.has(result.name)) {
                 present = false;
               }
+
               present && dispatch(weatherDescAction.appendWeather(result));
               dispatch(weatherDescAction.appendToRecord(result));
               return result;

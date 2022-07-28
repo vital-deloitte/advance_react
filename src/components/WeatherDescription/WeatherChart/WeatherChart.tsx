@@ -51,8 +51,12 @@ function WeatherChart({
     temperatures.push(reading.main.temp - 273.15);
   });
 
+  const seen = new Set<String>();
   dataDisplay.forEach((reading) => {
-    labels.push(new Date(reading.dt * 1000).toDateString().split(" ")[2]);
+    if (!seen.has(new Date(reading.dt * 1000).toDateString().split(" ")[2])) {
+      labels.push(new Date(reading.dt * 1000).toDateString().split(" ")[2]);
+    }
+    seen.add(new Date(reading.dt * 1000).toDateString().split(" ")[2]);
   });
 
   const data = {
@@ -60,7 +64,7 @@ function WeatherChart({
     datasets: [
       {
         fill: true,
-        label: "Sunrise",
+        label: "Rain Probability",
         data: temperatures,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
