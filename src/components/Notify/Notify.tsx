@@ -1,12 +1,9 @@
 import React from "react";
 import "./Notify.scss";
 import DoneIcon from "@mui/icons-material/Done";
-import {
-  WeatherStateType,
-  WeatherType,
-} from "../assets/WeatherInterfaces/AllTypes";
+import { WeatherType } from "../assets/WeatherInterfaces/AllTypes";
 import { weatherDescAction } from "../../store/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function Notify({ cityDetails }: { cityDetails: WeatherType }) {
   const dispatch = useDispatch();

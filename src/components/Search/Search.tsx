@@ -48,7 +48,21 @@ function Search() {
     const getWeatherDetails = `https://api.openweathermap.org/data/2.5/weather?q=${searchText.searchContent}&appid=${APP_KEY}`;
     const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${searchText.searchContent}&appid=${APP_KEY}`;
     if (searchText.searchContent.length > 0) {
-      dispatch(typingActions.populateHistory(searchText.searchContent));
+      if (searchText.prevHistory) {
+        let presentInHistory = true;
+        const isPresent = new Set<String>();
+
+        for (let history of searchText.prevHistory) {
+          isPresent.add(history[1]);
+        }
+
+        if (isPresent.has(searchText.searchContent)) {
+          presentInHistory = false;
+        }
+        presentInHistory &&
+          dispatch(typingActions.populateHistory(searchText.searchContent));
+      }
+
       axios
         .get(getWeatherDetails)
         .then((response: AxiosResponse) => {
@@ -67,7 +81,18 @@ function Search() {
                 ...result,
                 list: response.data.list,
               };
-              dispatch(weatherDescAction.appendWeather(result));
+
+              const seen = new Set<String>();
+              let present = true;
+
+              for (let city of isPresentWeather) {
+                seen.add(city.name);
+              }
+
+              if (seen.has(result.name)) {
+                present = false;
+              }
+              present && dispatch(weatherDescAction.appendWeather(result));
               dispatch(weatherDescAction.appendToRecord(result));
               return result;
             })

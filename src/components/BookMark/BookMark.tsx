@@ -14,8 +14,6 @@ function BookMark() {
   const bookMarkItems = useSelector(
     (state: WeatherStateType) => state.weatherDesc
   );
-  const stateStore = useSelector((state) => state);
-  console.log(stateStore);
   const dispatch = useDispatch();
   const [controlVisible, setControlVisible] = useState(true);
 
