@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./BookMark.scss";
 import NoLocation from "../NoLocation/NoLocation";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,17 @@ function BookMark() {
     (state: WeatherStateType) => state.weatherDesc
   );
   const dispatch = useDispatch();
+  const [controlVisible, setControlVisible] = useState(true);
+
+  useEffect(() => {
+    if (window.innerWidth <= 600) {
+      setControlVisible(false);
+    }
+
+    if (window.innerWidth > 600) {
+      setControlVisible(true);
+    }
+  }, []);
 
   const handleRemove = (cityName: string) => {
     dispatch(weatherDescAction.popBookMark(cityName));
@@ -28,9 +39,9 @@ function BookMark() {
         <>
           <Carousel
             variant="dark"
-            controls={bookMarkItems.bookMarks.length > 1}
-            indicators={bookMarkItems.bookMarks.length > 1}
-            interval={1000}
+            controls={controlVisible && bookMarkItems.bookMarks.length > 1}
+            indicators={controlVisible && bookMarkItems.bookMarks.length > 1}
+            interval={controlVisible ? 1000 : null}
           >
             {bookMarkItems.bookMarks.map((cityWeatherDescription) => {
               const weatherPic =
@@ -47,10 +58,10 @@ function BookMark() {
                           <div className="middle-container container">
                             <div className="row justify-content-center no-style pt-4">
                               <div className="col-sm-2 col-2"></div>
-                              <div className="col-sm-2 col-1"></div>
-                              <div className="col-sm-2 col-1"></div>
+                              <div className="col-sm-2 d-block d-sm-none col-1"></div>
+                              <div className="col-sm-2 d-block d-sm-none col-1"></div>
                               <div
-                                className="col-sm-4 col-4"
+                                className="col-sm-6 col-4"
                                 style={{ textAlign: "center" }}
                               >
                                 <img
@@ -92,7 +103,7 @@ function BookMark() {
                                   {(
                                     bookMarkItems.findCityAndDetails[
                                       cityWeatherDescription
-                                    ].main.temp.valueOf() / 10
+                                    ].main.temp.valueOf() - 273.15
                                   )
                                     .toFixed(0)
                                     .toString()}

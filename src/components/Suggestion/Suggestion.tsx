@@ -1,13 +1,11 @@
 import React from "react";
 import "./Suggestion.scss";
-// import { typingActions } from "../../store/store";
 import { useSelector } from "react-redux";
 import { SearchType } from "../assets/Search/SearchType";
 import { Link } from "react-router-dom";
 
 function Suggestion() {
   const typingData = useSelector((state: SearchType) => state.search);
-  // const dispatch = useDispatch();
 
   return (
     <div className="row pt-4 justify-content-flex-start remove-style">

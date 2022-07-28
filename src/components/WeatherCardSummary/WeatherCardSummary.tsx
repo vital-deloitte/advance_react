@@ -10,8 +10,9 @@ function WeatherCardSummary() {
   const weatherCards = useSelector(
     (state: WeatherStateType) => state.weatherDesc
   );
+
   return (
-    <div className="container overflow-hidden mt-4">
+    <div className="container overflow-hidden mt-1">
       <div className="row remove-style">
         {weatherCards.weatherArray.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
@@ -19,7 +20,7 @@ function WeatherCardSummary() {
           return (
             <div
               key={card.dt.valueOf()}
-              className="col-sm-3 col-12 card-main"
+              className="col-sm-3 col-12 card-main mt-5"
               style={{ paddingLeft: "1em" }}
             >
               <div className="row justify-content-between">
@@ -43,7 +44,7 @@ function WeatherCardSummary() {
               <div className="row justify-content-between pt-1">
                 <div className="col-sm-4 col-4">
                   <span className="degree">
-                    {(Number(card.main.temp) / 10).toFixed(1).toString()}
+                    {(Number(card.main.temp) - 273.15).toFixed(1).toString()}
                   </span>
                   <span className="degree-icon">&#176;</span>
                 </div>
