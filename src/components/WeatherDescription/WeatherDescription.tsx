@@ -30,13 +30,24 @@ function WeatherDescription() {
         add.style.display = "none";
       }
     }
-    dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
+    const seen = new Set<string>();
+    for (let cityName of descriptions.bookMarks) {
+      seen.add(cityName);
+    }
+
+    !seen.has(cityWeatherDescription.name) &&
+      dispatch(weatherDescAction.appendToBookMark(cityWeatherDescription.name));
   };
 
   const weatherPic =
     "https://openweathermap.org/img/wn/" +
     cityDetails.weather[0].icon +
     "@2x.png";
+
+  const bookMarkCity = new Set<string>();
+  descriptions.bookMarks.forEach((city) => {
+    bookMarkCity.add(city);
+  });
 
   return (
     <div>
@@ -49,15 +60,22 @@ function WeatherDescription() {
             </span>
           </Link>
         </div>
-        <div id="addtolist" className="right-top">
-          <p onClick={handleBtnClick}>
-            Add to List &nbsp;&nbsp;
-            <AddIcon className="addicon" />
-          </p>
-        </div>
-        <div id="addedtolist" className="button-change">
-          <Notify cityDetails={cityDetails} />
-        </div>
+        {!bookMarkCity.has(cityWeatherDescription.name) ? (
+          <>
+            <div id="addtolist" className="right-top">
+              <p onClick={handleBtnClick}>
+                Add to List &nbsp;&nbsp;
+                <AddIcon className="addicon" />
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div id="addedtolist" className="button-change">
+              <Notify cityDetails={cityDetails} />
+            </div>
+          </>
+        )}
       </div>
       <div className="middle-container container">
         <div className="row justify-content-center no-style">

@@ -10,10 +10,8 @@ interface CSSStyle {
 
 function WeatherDetails({ cityDetails }: { cityDetails: WeatherType }) {
   const [time] = useState(new Date(cityDetails.dt.valueOf() * 1000));
-
   let fontStyleTitle: CSSStyle;
   let fontStyleReading: CSSStyle;
-
   const location = useLocation();
 
   if (location.pathname === "/") {
@@ -46,7 +44,13 @@ function WeatherDetails({ cityDetails }: { cityDetails: WeatherType }) {
             TIME
           </p>
           <p className="weather-detail-reading" style={fontStyleReading}>
-            {time.getHours() + " : " + time.getMinutes()}
+            {time.toLocaleTimeString("en-US", {
+              timeZone: "UTC",
+              hour12: true,
+              hour: "numeric",
+              minute: "numeric",
+            })}
+            ​​​​​​
           </p>
         </div>
         <div className="col-sm-2 col-3 align-horizontal">

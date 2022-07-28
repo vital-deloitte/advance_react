@@ -53,10 +53,11 @@ function WeatherChart({
 
   const seen = new Set<String>();
   dataDisplay.forEach((reading) => {
-    if (!seen.has(new Date(reading.dt * 1000).toDateString().split(" ")[2])) {
-      labels.push(new Date(reading.dt * 1000).toDateString().split(" ")[2]);
+    const date = new Date(reading.dt * 1000).toDateString().split(" ");
+    if (!seen.has(date[1] + " " + date[2])) {
+      labels.push(date[1] + " " + date[2]);
     }
-    seen.add(new Date(reading.dt * 1000).toDateString().split(" ")[2]);
+    seen.add(date[1] + " " + date[2]);
   });
 
   const data = {
