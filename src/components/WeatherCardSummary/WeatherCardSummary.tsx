@@ -10,10 +10,9 @@ function WeatherCardSummary() {
   const weatherCards = useSelector(
     (state: WeatherStateType) => state.weatherDesc
   );
-
   return (
     <div className="container overflow-hidden mt-1">
-      <div className="row remove-style">
+      <div className="row remove-style ">
         {weatherCards.weatherArray.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
           const rainAlert = card.weather[0].main === "Rain";

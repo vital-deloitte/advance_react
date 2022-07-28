@@ -49,13 +49,13 @@ function Search() {
     const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${searchText.searchContent}&appid=${APP_KEY}`;
     if (searchText.searchContent.length > 0) {
       if (searchText.prevHistory) {
-        const isPresent = new Set<String>();
+        const alreadyPresent = new Set<String>();
 
         for (let history of searchText.prevHistory) {
-          isPresent.add(history[1]);
+          alreadyPresent.add(history[1]);
         }
 
-        !isPresent.has(searchText.searchContent) &&
+        !alreadyPresent.has(searchText.searchContent) &&
           dispatch(typingActions.populateHistory(searchText.searchContent));
       }
 
@@ -73,17 +73,18 @@ function Search() {
           axios
             .get(forecastUrl)
             .then((response: AxiosResponse) => {
+              console.log(response.data);
               result = {
                 ...result,
                 list: response.data.list,
               };
 
-              const seen = new Set<String>();
+              const added = new Set<String>();
               for (let city of isPresentWeather) {
-                seen.add(city.name);
+                added.add(city.name);
               }
 
-              !seen.has(result.name) &&
+              !added.has(result.name) &&
                 dispatch(weatherDescAction.appendWeather(result));
               dispatch(weatherDescAction.appendToRecord(result));
               return result;
@@ -135,5 +136,7 @@ function Search() {
     </>
   );
 }
+
+// && searchText.isTyping === true
 
 export default Search;

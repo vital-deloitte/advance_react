@@ -1,5 +1,6 @@
 import React from "react";
 import "./WeatherChart.scss";
+import { useLocation } from "react-router-dom";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,6 +31,11 @@ ChartJS.register(
   Legend
 );
 
+interface CSSStyle {
+  paddingTop: string;
+  marginBottom: string;
+}
+
 export const options = {
   responsive: true,
 };
@@ -48,16 +54,50 @@ function WeatherChart({
   const temperatures: Array<number> = [];
 
   dataDisplay.forEach((reading) => {
-    temperatures.push(reading.main.temp - 273.15);
+    temperatures.push(reading.main.temp);
   });
 
-  const seen = new Set<String>();
+  let daylengthpad: CSSStyle;
+
+  const location = useLocation();
+
+  if (location.pathname === "/") {
+    daylengthpad = {
+      paddingTop: "4em",
+      marginBottom: "0em",
+    };
+  } else {
+    daylengthpad = {
+      paddingTop: "7em",
+      marginBottom: "2em",
+    };
+  }
+
+  var prev = "",
+    i = 0;
   dataDisplay.forEach((reading) => {
-    const date = new Date(reading.dt * 1000).toDateString().split(" ");
-    if (!seen.has(date[1] + " " + date[2])) {
-      labels.push(date[1] + " " + date[2]);
+    // var reading22 =
+    //   new Date(reading.dt * 1000).toDateString().split(" ")[1] +
+    //   "-" +
+    //   new Date(reading.dt * 1000).toDateString().split(" ")[2];
+    // labels.push(reading22);
+
+    if (i === 0) {
+      prev = "";
     }
-    seen.add(date[1] + " " + date[2]);
+    if (prev !== new Date(reading.dt * 1000).toDateString().split(" ")[0]) {
+      labels.push(
+        new Date(reading.dt * 1000).toDateString().split(" ")[2] +
+          "-" +
+          (new Date(reading.dt * 1000).toDateString().split(" ")[1] +
+            "-" +
+            new Date(reading.dt * 1000).toDateString().split(" 20")[1])
+      );
+      prev = new Date(reading.dt * 1000).toDateString().split(" ")[0];
+      ++i;
+    }
+
+    // labels.push(new Date(reading.dt * 1000).toDateString());
   });
 
   const data = {
@@ -65,7 +105,7 @@ function WeatherChart({
     datasets: [
       {
         fill: true,
-        label: "Rain Probability",
+        label: "Temperature",
         data: temperatures,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -75,13 +115,13 @@ function WeatherChart({
 
   return (
     <div className="bottom-container container pt-4">
-      <div className="row chart-details justify-content-center pt-4">
-        <div className="col-sm-5">
+      <div className="row chart-details justify-content-center  pt-4">
+        <div className="col-sm-6">
           <p className="main-title">SUNRISE &#38; SUNSET</p>
           <div className="col-12 d-block d-sm-none pb-2">
             <Line data={data} options={options} />
           </div>
-          <p className="day-length ">
+          <p className="day-length" style={daylengthpad}>
             Length of day:{" "}
             <span style={{ color: "#2C2C2C" }}>
               {cityDetails &&
@@ -115,7 +155,7 @@ function WeatherChart({
           </p>
         </div>
         <div className="col-sm-6 d-none d-sm-block">
-          <Line data={data} options={options} />
+          <Line style={{ maxHeight: "260px" }} data={data} options={options} />
         </div>
       </div>
     </div>

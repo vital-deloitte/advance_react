@@ -6,10 +6,15 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import BookMark from "../BookMark/BookMark";
 import { useSelector } from "react-redux";
 import { SearchType } from "../assets/Search/SearchType";
+import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
 
 function Dashboard() {
   const searchText = useSelector((state: SearchType) => state.search);
+  const weatherInfo = useSelector(
+    (state: WeatherStateType) => state.weatherDesc
+  );
 
+  console.log(weatherInfo);
   const location = useLocation();
   return (
     <div>
