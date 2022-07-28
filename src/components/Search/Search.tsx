@@ -63,7 +63,6 @@ function Search() {
           axios
             .get(forecastUrl)
             .then((response: AxiosResponse) => {
-              console.log(response.data);
               result = {
                 ...result,
                 list: response.data.list,

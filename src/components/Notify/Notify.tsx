@@ -10,11 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Notify({ cityDetails }: { cityDetails: WeatherType }) {
   const dispatch = useDispatch();
-  const weatherState = useSelector(
-    (state: WeatherStateType) => state.weatherDesc
-  );
   const handleRemove = () => {
-    console.log(cityDetails, weatherState);
     dispatch(weatherDescAction.popBookMark(cityDetails.name));
   };
 

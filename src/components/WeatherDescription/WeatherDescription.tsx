@@ -77,7 +77,7 @@ function WeatherDescription() {
         <div className="row justify-content-center">
           <div className="col-sm-1">
             <p className="degree-number">
-              {(cityWeatherDescription.main.temp.valueOf() / 10)
+              {(cityWeatherDescription.main.temp.valueOf() - 273.15)
                 .toFixed(0)
                 .toString()}
               <img id="degree-picture" src={degree} alt="degree" />

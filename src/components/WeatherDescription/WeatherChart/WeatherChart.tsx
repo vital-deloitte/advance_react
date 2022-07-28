@@ -48,11 +48,11 @@ function WeatherChart({
   const temperatures: Array<number> = [];
 
   dataDisplay.forEach((reading) => {
-    temperatures.push(reading.main.temp);
+    temperatures.push(reading.main.temp - 273.15);
   });
 
   dataDisplay.forEach((reading) => {
-    labels.push(new Date(reading.dt * 1000).toDateString());
+    labels.push(new Date(reading.dt * 1000).toDateString().split(" ")[2]);
   });
 
   const data = {
