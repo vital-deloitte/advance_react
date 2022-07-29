@@ -19,6 +19,7 @@ import {
   WeatherStateType,
   WeatherType,
 } from "../../assets/WeatherInterfaces/AllTypes";
+import { CloudType } from "../../assets/WeatherInterfaces/chartTypes";
 
 ChartJS.register(
   CategoryScale,
@@ -73,31 +74,13 @@ function WeatherChart({
     };
   }
 
-  var prev = "",
-    i = 0;
+  const seen = new Set<string>();
   dataDisplay.forEach((reading) => {
-    // var reading22 =
-    //   new Date(reading.dt * 1000).toDateString().split(" ")[1] +
-    //   "-" +
-    //   new Date(reading.dt * 1000).toDateString().split(" ")[2];
-    // labels.push(reading22);
-
-    if (i === 0) {
-      prev = "";
+    const time = new Date(reading.dt * 1000).toDateString().split(" ");
+    if (!seen.has(time[2])) {
+      labels.push(time[2] + "-" + time[1]);
     }
-    if (prev !== new Date(reading.dt * 1000).toDateString().split(" ")[0]) {
-      labels.push(
-        new Date(reading.dt * 1000).toDateString().split(" ")[2] +
-          "-" +
-          (new Date(reading.dt * 1000).toDateString().split(" ")[1] +
-            "-" +
-            new Date(reading.dt * 1000).toDateString().split(" 20")[1])
-      );
-      prev = new Date(reading.dt * 1000).toDateString().split(" ")[0];
-      ++i;
-    }
-
-    // labels.push(new Date(reading.dt * 1000).toDateString());
+    seen.add(time[2]);
   });
 
   const data = {
