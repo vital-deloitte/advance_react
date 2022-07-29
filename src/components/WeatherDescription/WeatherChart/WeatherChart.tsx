@@ -54,7 +54,7 @@ function WeatherChart({
   const temperatures: Array<number> = [];
 
   dataDisplay.forEach((reading) => {
-    temperatures.push(reading.main.temp);
+    temperatures.push(reading.main.temp - 273.15);
   });
 
   let daylengthpad: CSSStyle;

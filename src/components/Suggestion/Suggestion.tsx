@@ -1,24 +1,24 @@
 import React from "react";
 import "./Suggestion.scss";
-// import { typingActions } from "../../store/store";
 import { useSelector } from "react-redux";
-import { SearchType } from "../assets/Search/SearchType";
 import { Link } from "react-router-dom";
+import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
 
 function Suggestion() {
-  const typingData = useSelector((state: SearchType) => state.search);
-  // const dispatch = useDispatch();
+  const citySuggestions = useSelector(
+    (state: WeatherStateType) => state.weatherDesc
+  );
 
   return (
     <div className="row pt-4 justify-content-flex-start remove-style">
-      <div className="col-sm-1 offset-1 d-none d-sm-block"></div>
-      {typingData.prevHistory?.map((city) => (
-        <div className="col-sm-1 col-3 cities" key={city[0]}>
+      <div className="col-sm-12 offset-1 d-none d-sm-block"></div>
+      {citySuggestions.weatherArray.map((city) => (
+        <div className="col-sm-2 col-3 cities" key={city.dt.valueOf()}>
           <Link
             style={{ textDecoration: "none", color: "#000" }}
-            to={`/${city[1]}`}
+            to={`/${city.name}`}
           >
-            {city[1]}
+            {city.name}
           </Link>
         </div>
       ))}

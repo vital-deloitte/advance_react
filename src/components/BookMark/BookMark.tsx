@@ -110,7 +110,7 @@ function BookMark() {
                                   {(
                                     bookMarkItems.findCityAndDetails[
                                       cityWeatherDescription
-                                    ].main.temp.valueOf() / 10
+                                    ].main.temp.valueOf() - 273.15
                                   )
                                     .toFixed(0)
                                     .toString()}

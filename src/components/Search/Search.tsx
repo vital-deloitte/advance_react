@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "./Search.scss";
@@ -13,6 +13,10 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { APP_KEY } from "../assets/Constants";
 import WeatherCardSummary from "../WeatherCardSummary/WeatherCardSummary";
+import cityAutoComplete from "../assets/IndianCity.json";
+import { IndianCityType } from "../assets/IndianCity";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
+import { Link } from "react-router-dom";
 
 function Search() {
   const searchText = useSelector((state: SearchType) => state.search);
@@ -20,6 +24,8 @@ function Search() {
     (state: WeatherStateType) => state.weatherDesc.weatherArray
   );
   const dispatch = useDispatch();
+
+  const [cityNameMatch, setCityNameMatch] = useState<Array<IndianCityType>>([]);
   const style = {
     border: "1px solid #DADADA",
     outline: "none",
@@ -28,6 +34,28 @@ function Search() {
     margin: "0",
     alignItems: "center",
   };
+
+  useEffect(() => {
+    if (searchText.searchContent.length > 0) {
+      let matches: Array<IndianCityType> = [];
+      matches = cityAutoComplete.filter((cityName) => {
+        const regex = new RegExp(`^${searchText.searchContent}.*`, "i");
+        return cityName.name.match(regex);
+      });
+      matches = matches
+        .sort(function compare(a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        })
+        .slice(0, 3);
+      setCityNameMatch(matches);
+    }
+  }, [searchText.searchContent]);
 
   const handleSearch = (searchString: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(typingActions.populateContent(searchString.target.value));
@@ -41,6 +69,12 @@ function Search() {
     setTimeout(() => {
       dispatch(typingActions.typingEnd());
     }, 300);
+  };
+
+  const handleAutoFillCompletion = (
+    e: React.MouseEvent<HTMLParagraphElement>
+  ) => {
+    dispatch(typingActions.populateContent(e.currentTarget.innerHTML));
   };
 
   const handleSearchClick = () => {
@@ -104,9 +138,11 @@ function Search() {
             <TextField
               variant="standard"
               fullWidth
+              autoComplete="off"
               className="search-bar"
+              value={searchText.searchContent}
               sx={style}
-              placeholder="Search Location"
+              placeholder={"Search Location"}
               InputProps={{
                 disableUnderline: true,
                 endAdornment: (
@@ -126,9 +162,33 @@ function Search() {
               onFocus={handleFocus}
               onBlur={handleBlur}
             />
+            <br></br>
+            <br></br>
+            <div className={searchText.isTyping === true ? "suggestions" : ""}>
+              {searchText.isTyping === true && (
+                <p className="text-muted">Suggestions</p>
+              )}
+              {searchText.isTyping === true &&
+                cityNameMatch.map((cityName) => {
+                  return (
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-sm-1 col-1 pb-2">
+                          <AddLocationIcon />
+                        </div>
+                        <div className="col-sm-3 col-3">
+                          <p onClick={(e) => handleAutoFillCompletion(e)}>
+                            {cityName.name}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+            {searchText.isTyping === true && <Suggestion />}
           </div>
         </div>
-        {searchText.isTyping === true && <Suggestion />}
       </div>
       {isPresentWeather.length > 0 && searchText.isTyping === true && (
         <WeatherCardSummary />
@@ -136,7 +196,5 @@ function Search() {
     </>
   );
 }
-
-// && searchText.isTyping === true
 
 export default Search;
