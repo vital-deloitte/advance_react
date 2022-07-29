@@ -4,6 +4,7 @@ import { WeatherType } from "../../assets/WeatherInterfaces/AllTypes";
 import { useLocation } from "react-router-dom";
 import image from "../assets/svg1.svg";
 import rainy from "../assets/rainy.png";
+import moment from "moment";
 
 interface CSSStyle {
   fontWeight: string;
@@ -12,12 +13,9 @@ interface CSSStyle {
 
 function WeatherDetails({ cityDetails }: { cityDetails: WeatherType }) {
   const [time] = useState(new Date(cityDetails.dt.valueOf() * 1000));
-
   let fontStyleTitle: CSSStyle;
   let fontStyleReading: CSSStyle;
-
   const location = useLocation();
-
   const alert = cityDetails.weather[0].main === "Rain";
 
   if (location.pathname === "/") {
@@ -79,12 +77,7 @@ function WeatherDetails({ cityDetails }: { cityDetails: WeatherType }) {
               </p>
 
               <p className="weather-detail-reading" style={fontStyleReading}>
-                {time.toLocaleTimeString("en-US", {
-                  timeZone: "UTC",
-                  hour12: true,
-                  hour: "numeric",
-                  minute: "numeric",
-                })}
+                {moment(time.toISOString()).add(1, "hour").format("LT")}
               </p>
             </div>
             <div className="col-6">
@@ -110,12 +103,7 @@ function WeatherDetails({ cityDetails }: { cityDetails: WeatherType }) {
             TIME
           </p>
           <p className="weather-detail-reading" style={fontStyleReading}>
-            {time.toLocaleTimeString("en-US", {
-              timeZone: "UTC",
-              hour12: true,
-              hour: "numeric",
-              minute: "numeric",
-            })}
+            {moment(time.toISOString()).format("LT")}
           </p>
         </div>
         <div className="col-sm-2 col-3 align-horizontal">

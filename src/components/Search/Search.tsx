@@ -106,7 +106,6 @@ function Search() {
           axios
             .get(forecastUrl)
             .then((response: AxiosResponse) => {
-              console.log(response.data);
               result = {
                 ...result,
                 list: response.data.list,
@@ -170,7 +169,7 @@ function Search() {
               {searchText.isTyping === true &&
                 cityNameMatch.map((cityName) => {
                   return (
-                    <div className="container">
+                    <div className="container" key={cityName.id.valueOf()}>
                       <div className="row">
                         <div className="col-sm-1 col-1 pb-2">
                           <AddLocationIcon />

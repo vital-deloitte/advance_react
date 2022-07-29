@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./WeatherChart.scss";
 import { useLocation } from "react-router-dom";
 import {
@@ -19,6 +19,7 @@ import {
   WeatherStateType,
   WeatherType,
 } from "../../assets/WeatherInterfaces/AllTypes";
+import moment from "moment";
 
 ChartJS.register(
   CategoryScale,
@@ -45,13 +46,18 @@ function WeatherChart({
   cityDetails,
 }: {
   cityName: string;
-  cityDetails?: WeatherType;
+  cityDetails: WeatherType;
 }) {
   const chartData = useSelector((state: WeatherStateType) => state.weatherDesc);
   const dataDisplay = chartData.findCityAndDetails[cityName].list;
-
+  const [currTime, setCurrTime] = useState<Date>();
   const labels: Array<String> = [];
   const temperatures: Array<number> = [];
+
+  useEffect(() => {
+    const now = new Date(cityDetails.sys.sunrise * 1000);
+    setCurrTime(now);
+  }, [cityDetails.sys.sunrise]);
 
   dataDisplay.forEach((reading) => {
     temperatures.push(reading.main.temp - 273.15);
@@ -106,33 +112,29 @@ function WeatherChart({
           <p className="day-length" style={daylengthpad}>
             Length of day:{" "}
             <span style={{ color: "#2C2C2C" }}>
-              {cityDetails &&
-                new Date(cityDetails.sys.sunrise * 1000)
-                  .toLocaleTimeString()
-                  .split(":")[0]}
-              {"H "}
-              {cityDetails &&
-                new Date(cityDetails.sys.sunrise * 1000)
-                  .toLocaleTimeString()
-                  .split(":")[1]}
-              {"M"}
+              {currTime &&
+                moment(currTime.toISOString()).format("H mm").split(" ")[0] +
+                  "H " +
+                  moment(currTime.toISOString()).format("H mm").split(" ")[1] +
+                  "M"}
             </span>
           </p>
           <p className="remaining-length">
             Remaining daylight:{" "}
             <span style={{ color: "#2C2C2C" }}>
-              {cityDetails &&
-                Math.abs(
-                  new Date(cityDetails.sys.sunset).getHours() -
-                    new Date().getHours()
-                )}
-              {"H"}{" "}
-              {cityDetails &&
-                Math.abs(
-                  new Date(cityDetails.sys.sunset).getMinutes() -
-                    new Date().getMinutes()
-                )}
-              {"M"}
+              {currTime &&
+                moment(cityDetails.sys.sunset * 1000)
+                  .subtract(new Date().toISOString())
+                  .format("H mm")
+                  .toString()
+                  .split(" ")[0] +
+                  "H " +
+                  moment(cityDetails.sys.sunset * 1000)
+                    .subtract(new Date().toISOString())
+                    .format("H mm")
+                    .toString()
+                    .split(" ")[1] +
+                  "M"}
             </span>
           </p>
         </div>
