@@ -16,7 +16,6 @@ import WeatherCardSummary from "../WeatherCardSummary/WeatherCardSummary";
 import cityAutoComplete from "../assets/IndianCity.json";
 import { IndianCityType } from "../assets/IndianCity";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
-import { Link } from "react-router-dom";
 
 function Search() {
   const searchText = useSelector((state: SearchType) => state.search);

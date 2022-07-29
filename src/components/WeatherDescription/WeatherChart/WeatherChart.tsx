@@ -19,7 +19,6 @@ import {
   WeatherStateType,
   WeatherType,
 } from "../../assets/WeatherInterfaces/AllTypes";
-import { CloudType } from "../../assets/WeatherInterfaces/chartTypes";
 
 ChartJS.register(
   CategoryScale,
@@ -78,7 +77,7 @@ function WeatherChart({
   dataDisplay.forEach((reading) => {
     const time = new Date(reading.dt * 1000).toDateString().split(" ");
     if (!seen.has(time[2])) {
-      labels.push(time[2] + "-" + time[1]);
+      labels.push(time[2] + "-" + time[1] + "-" + time[3].split("0")[1]);
     }
     seen.add(time[2]);
   });
