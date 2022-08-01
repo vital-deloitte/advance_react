@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, createRef, useState } from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "./Search.scss";
@@ -23,6 +23,7 @@ function Search() {
     (state: WeatherStateType) => state.weatherDesc.weatherArray
   );
   const dispatch = useDispatch();
+  const inputRef = createRef<HTMLDivElement>();
 
   const [cityNameMatch, setCityNameMatch] = useState<Array<IndianCityType>>([]);
   const style = {
@@ -81,17 +82,6 @@ function Search() {
     const getWeatherDetails = `https://api.openweathermap.org/data/2.5/weather?q=${searchText.searchContent}&appid=${APP_KEY}`;
     const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${searchText.searchContent}&appid=${APP_KEY}`;
     if (searchText.searchContent.length > 0) {
-      if (searchText.prevHistory) {
-        const alreadyPresent = new Set<String>();
-
-        for (let history of searchText.prevHistory) {
-          alreadyPresent.add(history[1]);
-        }
-
-        !alreadyPresent.has(searchText.searchContent) &&
-          dispatch(typingActions.populateHistory(searchText.searchContent));
-      }
-
       axios
         .get(getWeatherDetails)
         .then((response: AxiosResponse) => {
@@ -125,6 +115,11 @@ function Search() {
           return result;
         })
         .catch((err) => console.log(err));
+
+      if (inputRef && inputRef.current) {
+        inputRef.current.focus();
+        dispatch(typingActions.typingStart());
+      }
     }
   };
 
@@ -140,6 +135,7 @@ function Search() {
               className="search-bar"
               value={searchText.searchContent}
               sx={style}
+              ref={inputRef}
               placeholder={"Search Location"}
               InputProps={{
                 disableUnderline: true,
@@ -174,7 +170,10 @@ function Search() {
                         <div className="col-sm-1 col-1 pb-2">
                           <AddLocationIcon />
                         </div>
-                        <div className="col-sm-3 col-3">
+                        <div
+                          className="col-sm-3 col-3"
+                          style={{ cursor: "pointer" }}
+                        >
                           <p onClick={(e) => handleAutoFillCompletion(e)}>
                             {cityName.name}
                           </p>

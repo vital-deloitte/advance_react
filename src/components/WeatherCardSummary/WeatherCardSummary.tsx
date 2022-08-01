@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./WeatherCard.scss";
 import image from "./assets/svg1.svg";
 import { useSelector } from "react-redux";
-import { WeatherStateType } from "../assets/WeatherInterfaces/AllTypes";
+import {
+  WeatherStateType,
+  WeatherType,
+} from "../assets/WeatherInterfaces/AllTypes";
 import { iconUrl } from "../assets/Constants";
 
 function WeatherCardSummary() {
   const weatherCards = useSelector(
     (state: WeatherStateType) => state.weatherDesc
   );
+
+  const [cityWeather, setCityWeather] = useState<Array<WeatherType>>([]);
+  useEffect(() => {
+    const uniquify = new Set<string>();
+    let resultUniqueArray: Array<WeatherType> = [];
+    weatherCards.weatherArray.forEach((city) => {
+      if (!uniquify.has(city.name)) {
+        resultUniqueArray.push(city);
+      }
+      uniquify.add(city.name);
+    });
+    setCityWeather(resultUniqueArray);
+  }, [weatherCards.weatherArray]);
+
   return (
     <div className="container overflow-hidden mt-1">
       <div className="row remove-style ">
-        {weatherCards.weatherArray.map((card) => {
+        {cityWeather.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
           const rainAlert = card.weather[0].main === "Rain";
           return (

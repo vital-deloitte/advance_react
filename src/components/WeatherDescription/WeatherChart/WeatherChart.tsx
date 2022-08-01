@@ -59,6 +59,24 @@ function WeatherChart({
     setCurrTime(now);
   }, [cityDetails.sys.sunrise]);
 
+  const res =
+    Number(
+      new Date(cityDetails.sys.sunset * 1000).getTime().toString()
+    ).valueOf() - Number(new Date().getTime().toString()).valueOf();
+  const hours = Number(Math.floor(res / 3600000));
+
+  // console.log(Math.floor(res / 3600000), Math.floor(res / 60000 - hours * 60));
+
+  const [getHours, setGetHours] = useState<number>(Math.floor(res / 3600000));
+  const [getMinutes] = useState<number>(Math.floor(res / 60000 - hours * 60));
+  // console.log(new Date().getHours());
+
+  useEffect(() => {
+    if (new Date().getHours() < getHours) {
+      setGetHours(0);
+    }
+  }, [getHours]);
+
   dataDisplay.forEach((reading) => {
     temperatures.push(reading.main.temp - 273.15);
   });
@@ -113,28 +131,18 @@ function WeatherChart({
             Length of day:{" "}
             <span style={{ color: "#2C2C2C" }}>
               {currTime &&
-                moment(currTime.toISOString()).format("H mm").split(" ")[0] +
+                moment(currTime.toISOString()).format("hh mm A").split(" ")[0] +
                   "H " +
-                  moment(currTime.toISOString()).format("H mm").split(" ")[1] +
-                  "M"}
+                  moment(currTime.toISOString())
+                    .format("hh mm A")
+                    .split(" ")[1] +
+                  "M "}
             </span>
           </p>
           <p className="remaining-length">
             Remaining daylight:{" "}
             <span style={{ color: "#2C2C2C" }}>
-              {currTime &&
-                moment(cityDetails.sys.sunset * 1000)
-                  .subtract(new Date().toISOString())
-                  .format("H mm")
-                  .toString()
-                  .split(" ")[0] +
-                  "H " +
-                  moment(cityDetails.sys.sunset * 1000)
-                    .subtract(new Date().toISOString())
-                    .format("H mm")
-                    .toString()
-                    .split(" ")[1] +
-                  "M"}
+              {getHours.toString() + "H " + getMinutes.toString() + "M"}
             </span>
           </p>
         </div>
