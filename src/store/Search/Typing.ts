@@ -6,7 +6,7 @@ interface Typing {
 }
 const typingSlice = createSlice({
   name: "typing",
-  initialState: { isTyping: false, searchContent: "", prevHistory: [], id: 0 },
+  initialState: { isTyping: false, searchContent: "" },
   reducers: {
     typingStart: (state: Typing) => {
       state.isTyping = true;
@@ -23,13 +23,13 @@ const typingSlice = createSlice({
     deleteContent: (state: SearchContentType) => {
       state.searchContent = "";
     },
-    populateHistory: (
-      state: SearchContentType,
-      action: PayloadAction<String>
-    ) => {
-      state.prevHistory?.push([state.id, action.payload]);
-      state.id++;
-    },
+    // populateHistory: (
+    //   state: SearchContentType,
+    //   action: PayloadAction<String>
+    // ) => {
+    //   state.prevHistory?.push([state.id, action.payload]);
+    //   state.id++;
+    // },
   },
 });
 

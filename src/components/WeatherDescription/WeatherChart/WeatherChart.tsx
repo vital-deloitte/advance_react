@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./WeatherChart.scss";
 import { useLocation } from "react-router-dom";
 import {
@@ -19,6 +19,7 @@ import {
   WeatherStateType,
   WeatherType,
 } from "../../assets/WeatherInterfaces/AllTypes";
+import moment from "moment";
 
 ChartJS.register(
   CategoryScale,
@@ -45,16 +46,39 @@ function WeatherChart({
   cityDetails,
 }: {
   cityName: string;
-  cityDetails?: WeatherType;
+  cityDetails: WeatherType;
 }) {
   const chartData = useSelector((state: WeatherStateType) => state.weatherDesc);
   const dataDisplay = chartData.findCityAndDetails[cityName].list;
-
+  const [currTime, setCurrTime] = useState<Date>();
   const labels: Array<String> = [];
   const temperatures: Array<number> = [];
 
+  useEffect(() => {
+    const now = new Date(cityDetails.sys.sunrise * 1000);
+    setCurrTime(now);
+  }, [cityDetails.sys.sunrise]);
+
+  const res =
+    Number(
+      new Date(cityDetails.sys.sunset * 1000).getTime().toString()
+    ).valueOf() - Number(new Date().getTime().toString()).valueOf();
+  const hours = Number(Math.floor(res / 3600000));
+
+  // console.log(Math.floor(res / 3600000), Math.floor(res / 60000 - hours * 60));
+
+  const [getHours, setGetHours] = useState<number>(Math.floor(res / 3600000));
+  const [getMinutes] = useState<number>(Math.floor(res / 60000 - hours * 60));
+  // console.log(new Date().getHours());
+
+  useEffect(() => {
+    if (new Date().getHours() < getHours) {
+      setGetHours(0);
+    }
+  }, [getHours]);
+
   dataDisplay.forEach((reading) => {
-    temperatures.push(reading.main.temp);
+    temperatures.push(reading.main.temp - 273.15);
   });
 
   let daylengthpad: CSSStyle;
@@ -73,31 +97,13 @@ function WeatherChart({
     };
   }
 
-  var prev = "",
-    i = 0;
+  const seen = new Set<string>();
   dataDisplay.forEach((reading) => {
-    // var reading22 =
-    //   new Date(reading.dt * 1000).toDateString().split(" ")[1] +
-    //   "-" +
-    //   new Date(reading.dt * 1000).toDateString().split(" ")[2];
-    // labels.push(reading22);
-
-    if (i === 0) {
-      prev = "";
+    const time = new Date(reading.dt * 1000).toDateString().split(" ");
+    if (!seen.has(time[2])) {
+      labels.push(time[2] + "-" + time[1] + "-" + time[3].split("0")[1]);
     }
-    if (prev !== new Date(reading.dt * 1000).toDateString().split(" ")[0]) {
-      labels.push(
-        new Date(reading.dt * 1000).toDateString().split(" ")[2] +
-          "-" +
-          (new Date(reading.dt * 1000).toDateString().split(" ")[1] +
-            "-" +
-            new Date(reading.dt * 1000).toDateString().split(" 20")[1])
-      );
-      prev = new Date(reading.dt * 1000).toDateString().split(" ")[0];
-      ++i;
-    }
-
-    // labels.push(new Date(reading.dt * 1000).toDateString());
+    seen.add(time[2]);
   });
 
   const data = {
@@ -124,33 +130,19 @@ function WeatherChart({
           <p className="day-length" style={daylengthpad}>
             Length of day:{" "}
             <span style={{ color: "#2C2C2C" }}>
-              {cityDetails &&
-                new Date(cityDetails.sys.sunrise * 1000)
-                  .toLocaleTimeString()
-                  .split(":")[0]}
-              {"H "}
-              {cityDetails &&
-                new Date(cityDetails.sys.sunrise * 1000)
-                  .toLocaleTimeString()
-                  .split(":")[1]}
-              {"M"}
+              {currTime &&
+                moment(currTime.toISOString()).format("hh mm A").split(" ")[0] +
+                  "H " +
+                  moment(currTime.toISOString())
+                    .format("hh mm A")
+                    .split(" ")[1] +
+                  "M "}
             </span>
           </p>
           <p className="remaining-length">
             Remaining daylight:{" "}
             <span style={{ color: "#2C2C2C" }}>
-              {cityDetails &&
-                Math.abs(
-                  new Date(cityDetails.sys.sunset).getHours() -
-                    new Date().getHours()
-                )}
-              {"H"}{" "}
-              {cityDetails &&
-                Math.abs(
-                  new Date(cityDetails.sys.sunset).getMinutes() -
-                    new Date().getMinutes()
-                )}
-              {"M"}
+              {getHours.toString() + "H " + getMinutes.toString() + "M"}
             </span>
           </p>
         </div>
