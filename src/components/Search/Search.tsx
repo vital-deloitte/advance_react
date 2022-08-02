@@ -80,7 +80,7 @@ function Search() {
   const handleSearchClick = () => {
     let result: WeatherType;
     const getWeatherDetails = `https://api.openweathermap.org/data/2.5/weather?q=${searchText.searchContent}&appid=${APP_KEY}`;
-    const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${searchText.searchContent}&appid=${APP_KEY}`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${searchText.searchContent}&appid=${APP_KEY}`;
     if (searchText.searchContent.length > 0) {
       axios
         .get(getWeatherDetails)
