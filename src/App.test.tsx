@@ -80,29 +80,29 @@ test("renders weather description page", async () => {
   expect(getWeatherDesc).toBeInTheDocument();
 });
 
-test("renders added to list and remove button", async () => {
-  const { container } = render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-  let getById = queryByAttribute.bind(null, "id");
-  const searchIcon = getById(container, "search-icon-button");
-  const getSearchBar = screen.getByPlaceholderText("Search Location");
-  searchIcon && userEvent.click(getSearchBar);
-  userEvent.type(getSearchBar, "Mangalore");
-  searchIcon && fireEvent.click(searchIcon);
-  getSearchBar && fireEvent.click(getSearchBar);
-  const weatherDescCard = await screen.findByTestId("card-test");
-  expect(weatherDescCard).toBeInTheDocument();
-  getById = queryByAttribute.bind(null, "id");
-  const cityWeatherCardLink = getById(container, "navigate-desc");
-  cityWeatherCardLink && cityWeatherCardLink.click();
-  const getStupidDesc = await screen.findByTestId("weather-desc");
-  expect(getStupidDesc).toBeInTheDocument();
-  getById = queryByAttribute.bind(null, "id");
-  const getaddtolist = getById(container, "addtolist");
-  getaddtolist && getaddtolist.click();
-  const addedbtn = screen.getByTestId("added-button");
-  expect(addedbtn.innerHTML).toEqual("Added to list ");
-});
+// test("renders added to list and remove button", async () => {
+//   const { container } = render(
+//     <Provider store={store}>
+//       <App />
+//     </Provider>
+//   );
+//   let getById = queryByAttribute.bind(null, "id");
+//   const searchIcon = getById(container, "search-icon-button");
+//   const getSearchBar = screen.getByPlaceholderText("Search Location");
+//   searchIcon && userEvent.click(getSearchBar);
+//   userEvent.type(getSearchBar, "Mangalore");
+//   searchIcon && fireEvent.click(searchIcon);
+//   getSearchBar && fireEvent.click(getSearchBar);
+//   const weatherDescCard = await screen.findByTestId("card-test");
+//   expect(weatherDescCard).toBeInTheDocument();
+//   getById = queryByAttribute.bind(null, "id");
+//   const cityWeatherCardLink = getById(container, "navigate-desc");
+//   cityWeatherCardLink && cityWeatherCardLink.click();
+//   const getStupidDesc = await screen.findByTestId("weather-desc");
+//   expect(getStupidDesc).toBeInTheDocument();
+//   getById = queryByAttribute.bind(null, "id");
+//   const getaddtolist = getById(container, "addtolist");
+//   getaddtolist && getaddtolist.click();
+//   const addedbtn = screen.getByTestId("added-button");
+//   expect(addedbtn.innerHTML).toEqual("Added to list ");
+// });
