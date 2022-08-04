@@ -31,8 +31,6 @@ function BookMark() {
     if (window.innerWidth > 600) {
       setControlsAreVisible(true);
     }
-
-    // you can also set up event listeners here for "resize" for full responsiveness
   }, []);
 
   return (

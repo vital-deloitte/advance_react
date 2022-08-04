@@ -28,7 +28,7 @@ function WeatherCardSummary() {
   }, [weatherCards.weatherArray]);
 
   return (
-    <div className="container overflow-hidden mt-1">
+    <div className="container overflow-hidden mt-1" data-testid="summaryCard">
       <div className="row remove-style ">
         {cityWeather.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
@@ -45,7 +45,9 @@ function WeatherCardSummary() {
                     to={`/${card.name}`}
                     style={{ textDecoration: "none", color: "#000" }}
                   >
-                    <p className="rob-500">{card.name.toString()}</p>
+                    <p id="navigate-desc" className="rob-500">
+                      {card.name.toString()}
+                    </p>
                   </Link>
                 </div>
                 <div className="col-sm-2 col-2">

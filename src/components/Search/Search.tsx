@@ -143,6 +143,7 @@ function Search() {
                   <InputAdornment position="end">
                     {
                       <SearchIcon
+                        id="search-icon-button"
                         className="search-icon"
                         onClick={handleSearchClick}
                       />

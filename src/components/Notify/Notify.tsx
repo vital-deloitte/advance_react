@@ -22,7 +22,7 @@ function Notify({ cityDetails }: { cityDetails: WeatherType }) {
     <div className="flex-container container-fluid">
       <div className="row justify-content-end align-items-start">
         <div className="col-sm-2 col-7" style={{ textAlign: "right" }}>
-          <button type="button" className="btn btn-success">
+          <button type="button" className="btn btn-success" data-testid="added-button">
             Added to list{" "}
             <DoneIcon style={{ height: "0.7em", verticalAlign: "top" }} />
           </button>

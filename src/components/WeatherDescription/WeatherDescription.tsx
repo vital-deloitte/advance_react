@@ -51,7 +51,7 @@ function WeatherDescription() {
 
   return (
     <div>
-      <div className="top-container container-fluid">
+      <div className="top-container container-fluid" data-testid="weather-desc">
         <div className="row justify-content-around ">
           <div className="col-sm-2 col-1 ml-2">
             <Link style={{ textDecoration: "none", color: "black" }} to={"/"}>
@@ -68,7 +68,7 @@ function WeatherDescription() {
             <>
               <div className="col-sm-7 col-8">
                 <div id="addtolist" style={{ textAlign: "right" }}>
-                  <p onClick={handleBtnClick}>
+                  <p onClick={handleBtnClick} id="add-to-list">
                     Add to List &nbsp;&nbsp;
                     <AddIcon className="addicon" />
                   </p>
