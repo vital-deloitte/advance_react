@@ -14,16 +14,13 @@ function Suggestion() {
 
   const [cityWeather, setCityWeather] = useState<Array<WeatherType>>([]);
   useEffect(() => {
-    const uniquify = new Set<string>();
     let resultUniqueArray: Array<WeatherType> = [];
-    citySuggestions.weatherArray.forEach((city) => {
-      if (!uniquify.has(city.name)) {
-        resultUniqueArray.push(city);
-      }
-      uniquify.add(city.name);
+    const result = Object.entries(citySuggestions.findCityAndDetails);
+    result.forEach((entry) => {
+      resultUniqueArray.push(entry[1]);
     });
     setCityWeather(resultUniqueArray);
-  }, [citySuggestions.weatherArray]);
+  }, [citySuggestions]);
 
   return (
     <div className="row pt-4 justify-content-flex-start remove-style">

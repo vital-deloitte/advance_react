@@ -32,7 +32,6 @@ export interface Sys {
 
 export interface WeatherStateType {
   weatherDesc: {
-    weatherArray: WeatherType[];
     findCityAndDetails: Record<string, WeatherType>;
     bookMarks: Array<string>;
   };

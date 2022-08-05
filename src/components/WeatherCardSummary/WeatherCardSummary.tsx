@@ -16,21 +16,18 @@ function WeatherCardSummary() {
 
   const [cityWeather, setCityWeather] = useState<Array<WeatherType>>([]);
   useEffect(() => {
-    const uniquify = new Set<string>();
     let resultUniqueArray: Array<WeatherType> = [];
-    weatherCards.weatherArray.forEach((city) => {
-      if (!uniquify.has(city.name)) {
-        resultUniqueArray.push(city);
-      }
-      uniquify.add(city.name);
+    const result = Object.entries(weatherCards.findCityAndDetails);
+    result.forEach((entry) => {
+      resultUniqueArray.push(entry[1]);
     });
     setCityWeather(resultUniqueArray);
-  }, [weatherCards.weatherArray]);
+  }, [weatherCards]);
 
   return (
     <div className="container overflow-hidden mt-1" data-testid="summaryCard">
       <div className="row remove-style ">
-        {cityWeather.map((card) => {
+        {cityWeather.map((card, index) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
           const rainAlert = card.weather[0].main === "Rain";
           return (
@@ -45,7 +42,7 @@ function WeatherCardSummary() {
                     to={`/${card.name}`}
                     style={{ textDecoration: "none", color: "#000" }}
                   >
-                    <p id="navigate-desc" className="rob-500">
+                    <p data-testid="navigate-desc" className="rob-500">
                       {card.name.toString()}
                     </p>
                   </Link>

@@ -19,9 +19,8 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 
 function Search() {
   const searchText = useSelector((state: SearchType) => state.search);
-  const isPresentWeather = useSelector(
-    (state: WeatherStateType) => state.weatherDesc.weatherArray
-  );
+  const weathers = useSelector((state: WeatherStateType) => state.weatherDesc);
+  const isPresent = Object.entries(weathers.findCityAndDetails).length > 0;
   const dispatch = useDispatch();
   const inputRef = createRef<HTMLDivElement>();
 
@@ -101,13 +100,6 @@ function Search() {
                 list: response.data.list,
               };
 
-              const added = new Set<String>();
-              for (let city of isPresentWeather) {
-                added.add(city.name);
-              }
-
-              !added.has(result.name) &&
-                dispatch(weatherDescAction.appendWeather(result));
               dispatch(weatherDescAction.appendToRecord(result));
               return result;
             })
@@ -188,7 +180,7 @@ function Search() {
           </div>
         </div>
       </div>
-      {isPresentWeather.length > 0 && searchText.isTyping === true && (
+      {isPresent && searchText.isTyping === true && (
         <WeatherCardSummary />
       )}
     </>
