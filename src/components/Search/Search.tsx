@@ -180,9 +180,7 @@ function Search() {
           </div>
         </div>
       </div>
-      {isPresent && searchText.isTyping === true && (
-        <WeatherCardSummary />
-      )}
+      {isPresent && searchText.isTyping === true && <WeatherCardSummary />}
     </>
   );
 }

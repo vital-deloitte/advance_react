@@ -27,7 +27,7 @@ function WeatherCardSummary() {
   return (
     <div className="container overflow-hidden mt-1" data-testid="summaryCard">
       <div className="row remove-style ">
-        {cityWeather.map((card, index) => {
+        {cityWeather.map((card) => {
           const imgUrl = iconUrl + card.weather[0].icon + "@2x.png";
           const rainAlert = card.weather[0].main === "Rain";
           return (

@@ -51,7 +51,7 @@ function WeatherDetails({ cityDetails }: { cityDetails: WeatherType }) {
   }
 
   return (
-    <div className="third-container container">
+    <div className="third-container container" data-testid="weather-details">
       {alert && (
         <div className="weather-details mb-4 d-block d-sm-none">
           <div className="row pb-4">
