@@ -16,10 +16,11 @@ function WeatherDescription() {
     (state: WeatherStateType) => state.weatherDesc
   );
   const location = useLocation();
+  console.log(window.location.href);
   const city = decodeURIComponent(location.pathname.slice(1));
   const cityDetails = descriptions.findCityAndDetails[city];
   const [cityWeatherDescription] = useState(cityDetails);
-
+  console.log(location, "n", city, "n", descriptions.findCityAndDetails);
   const dispatch = useDispatch();
   const handleBtnClick = () => {
     let added = document.getElementById("addedtolist");

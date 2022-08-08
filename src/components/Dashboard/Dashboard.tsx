@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Search from "../Search/Search";
 import Navbar from "../Navbar/Navbar";
 import WeatherDescription from "../WeatherDescription/WeatherDescription";
@@ -9,10 +9,10 @@ import { SearchType } from "../assets/Search/SearchType";
 
 function Dashboard() {
   const searchText = useSelector((state: SearchType) => state.search);
-  const logState = useSelector((state) => state);
-  useEffect(() => {
-    console.log(logState);
-  });
+  // const logState = useSelector((state) => state);
+  // useEffect(() => {
+  //   console.log(logState);
+  // });
 
   const location = useLocation();
 

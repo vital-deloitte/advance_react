@@ -120,7 +120,7 @@ function WeatherChart({
   };
 
   return (
-    <div className="bottom-container container pt-4">
+    <div className="bottom-container container pt-4" data-testid="weather-chart">
       <div className="row chart-details justify-content-center  pt-4">
         <div className="col-sm-6">
           <p className="main-title">SUNRISE &#38; SUNSET</p>
